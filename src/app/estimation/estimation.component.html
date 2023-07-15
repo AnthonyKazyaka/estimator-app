@@ -1,0 +1,81 @@
+<div class="profession-form mat-elevation-z8">
+  <h2 class="mat-headline">Specify Profession</h2>
+  <form [formGroup]="professionForm" (ngSubmit)="onProfessionSubmit()">
+    <mat-form-field appearance="fill">
+      <mat-label>Profession</mat-label>
+      <input matInput type="text" formControlName="profession" id="profession">
+      <mat-error *ngIf="professionForm.get('profession')?.invalid">This field is required</mat-error>
+    </mat-form-field>
+    <button mat-raised-button color="primary" type="submit">Set Profession</button>
+  </form>
+</div>
+
+<div class="services-form mat-elevation-z8">
+  <h2 class="mat-headline">Add Services</h2>
+  <form [formGroup]="serviceForm" (ngSubmit)="onSubmit()">
+    <mat-form-field appearance="fill">
+      <mat-label>Service Name</mat-label>
+      <input matInput type="text" formControlName="serviceName" id="serviceName">
+      <mat-error *ngIf="serviceForm.get('serviceName')?.invalid">This field is required</mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Service Price</mat-label>
+      <input matInput type="number" formControlName="servicePrice" id="servicePrice">
+      <mat-error *ngIf="serviceForm.get('servicePrice')?.invalid">This field is required</mat-error>
+    </mat-form-field>
+    <button mat-raised-button color="primary" type="submit">Add Service</button>
+  </form>
+  <h2 class="mat-headline">Services</h2>
+  <mat-list>
+    <mat-list-item *ngFor="let service of services">
+      {{service.name}}: {{service.price}}
+    </mat-list-item>
+  </mat-list>
+</div>
+
+<div class="container my-4">
+  <h2 class="text-center">Job Estimation</h2>
+  <mat-card class="mt-4">
+    <mat-card-content>
+      <mat-card-title>Enter Job Description</mat-card-title>
+      <textarea matInput [(ngModel)]="conversation" class="form-control" rows="5" placeholder="Start recording or type here..."></textarea>
+    </mat-card-content>
+  </mat-card>
+
+  <div class="my-4">
+    <button mat-raised-button (click)="startRecording()" [color]="isRecording ? 'warn' : 'primary'">
+      {{ isRecording ? 'Stop Recording' : 'Start Recording' }}
+    </button>      
+    <mat-form-field>
+      <input matInput placeholder="Selected file" [value]="fileName" readonly>
+      <button mat-button color="primary" (click)="fileInput.click()">Browse</button>
+    </mat-form-field>
+    <input hidden type="file" #fileInput (change)="onFileSelected($event)" />    
+  </div>
+
+  <mat-card class="mt-4" *ngIf="imageURL">
+    <img mat-card-image [src]="imageURL" alt="Uploaded image"/>
+    <mat-card-content>
+      <mat-card-title>Uploaded Image</mat-card-title>
+    </mat-card-content>
+  </mat-card>
+
+  <button mat-raised-button color="accent" (click)="processConversation()" class="mt-4">Generate Estimate</button>
+
+  <h2>Raw Response from AI</h2>
+  <p>{{rawResponse}}</p>
+
+  <mat-card class="mt-4" *ngIf="plans.length > 0">
+    <mat-card-content>
+      <mat-card-title>Estimated Plans</mat-card-title>
+      <mat-list>
+        <mat-list-item *ngFor="let plan of plans">
+          <h3 class="mat-subheading-2">{{ plan.name }}: ${{ plan.cost }}</h3>
+          <p><strong>Details:</strong> {{plan.details}}</p>
+          <p><strong>Timeline:</strong> {{plan.timeline}}</p>
+          <p><strong>Resources:</strong> {{plan.resources.join(', ')}}</p>
+        </mat-list-item>
+      </mat-list>
+    </mat-card-content>
+  </mat-card>
+</div>

@@ -1,0 +1,10 @@
+.container {
+    max-width: 600px;
+}
+textarea {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+img {
+    max-height: 300px;
+}
